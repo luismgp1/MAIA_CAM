@@ -41,27 +41,6 @@ namespace MAIA_CAM
         public static string _1foto = "1foto.jpg";
         public static string _1nocapturo = "1nocapturo.jpg";
 
-
-        /*
-        public void setcantidad(int cantidad)
-        {
-            this.cantidad = cantidad;
-        }
-        public int getcantidad()
-        {
-            return cantidad;
-        }
-
-        public void setcont(int cantidad)
-        {
-            this.cantidad = cont;
-        }
-        public int getcont()
-        {
-            return cont;
-        }
-        */
-
         public MainPage()
         {
             //this.InitializeComponent();
@@ -171,7 +150,7 @@ namespace MAIA_CAM
                 CameraCaptureUI captureUI = new CameraCaptureUI();
                 captureUI.PhotoSettings.AllowCropping = false;
                 captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
-                var photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);////CAPTURAR MAS DE ! FOTO
+                var photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);////CAPTURAR MAS DE 1 FOTO
 
                 captureUI.PhotoSettings.MaxResolution = Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution.HighestAvailable;
 

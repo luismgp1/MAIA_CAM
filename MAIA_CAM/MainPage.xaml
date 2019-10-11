@@ -1,0 +1,47 @@
+﻿<Page Margin="0,0,0,0"
+    x:Class="MAIA_CAM.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MAIA_CAM"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <RelativePanel x:Name="FocusCanvas">
+
+        <Image x:Name="imageControl" Stretch="Uniform" Height="auto" Width="auto"  Margin="100,0,0,0" HorizontalAlignment="Left" />
+        <Image x:Name="imageControl1" Stretch="Uniform" />
+
+        <StackPanel Height="250" Visibility="Visible" Width="95" Margin="5,100,0,0" HorizontalAlignment="Left" >
+
+            <Button Name="Foto"   Click="Buttonfoto" IsEnabled="True">
+                <Viewbox MaxHeight="70" MaxWidth="70">
+                    <SymbolIcon Symbol="Camera"/>
+                </Viewbox>
+            </Button>
+            <Button x:Name="Borrar" Click="Borrar_Click" IsEnabled="True">
+                <Viewbox MaxHeight="70" MaxWidth="70">
+                    <SymbolIcon Symbol="Delete"/>
+                </Viewbox>
+            </Button>
+            <Button x:Name="Cerrar" Click="Cerrar_Click" IsEnabled="True">
+                <Viewbox MaxHeight="70" MaxWidth="70">
+                    <SymbolIcon Symbol="Clear"/>
+                </Viewbox>
+            </Button>
+
+        </StackPanel>
+
+
+
+    </RelativePanel>
+
+
+
+
+
+
+
+
+</Page>

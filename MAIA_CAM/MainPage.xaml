@@ -8,34 +8,43 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <RelativePanel x:Name="FocusCanvas">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"   />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <Image x:Name="imageControl" Stretch="Uniform" Height="auto" Width="auto"  Margin="100,0,0,0" HorizontalAlignment="Left" />
-        <Image x:Name="imageControl1" Stretch="Uniform" />
+        <StackPanel Height="320" Visibility="Visible" Width="95"  >
 
-        <StackPanel Height="250" Visibility="Visible" Width="95" Margin="5,100,0,0" HorizontalAlignment="Left" >
-
-            <Button Name="Foto"   Click="Buttonfoto" IsEnabled="True">
+            <Button Name="Foto"   Click="Buttonfoto" IsEnabled="True" Background="Silver" Foreground="Black" >
                 <Viewbox MaxHeight="70" MaxWidth="70">
                     <SymbolIcon Symbol="Camera"/>
                 </Viewbox>
             </Button>
-            <Button x:Name="Borrar" Click="Borrar_Click" IsEnabled="True">
+
+            <Rectangle  Width="70" Height="20" />
+
+            <Button x:Name="Borrar"  Click="Borrar_Click" IsEnabled="True" Background="Silver" Foreground="Black">
+                <!--BorderThickness="5" BorderBrush="LimeGreen"-->
                 <Viewbox MaxHeight="70" MaxWidth="70">
                     <SymbolIcon Symbol="Delete"/>
                 </Viewbox>
             </Button>
-            <Button x:Name="Cerrar" Click="Cerrar_Click" IsEnabled="True">
+            <Rectangle   Width="0" Height="20" />
+            <Button x:Name="Cerrar" Click="Cerrar_Click" IsEnabled="True" Background="Silver" Foreground="Black"  >
                 <Viewbox MaxHeight="70" MaxWidth="70">
-                    <SymbolIcon Symbol="Clear"/>
+                    <SymbolIcon Symbol="Clear" />
                 </Viewbox>
             </Button>
 
         </StackPanel>
 
+        <Image Grid.Column="1" x:Name="imageControl" Stretch="Fill" Height="auto" Width="auto" />
 
 
-    </RelativePanel>
+
+    </Grid>
 
 
 

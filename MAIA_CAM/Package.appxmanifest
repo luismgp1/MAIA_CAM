@@ -11,7 +11,7 @@
   <Identity
     Name="MAIACAM"
     Publisher="CN=Luis"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="e59432dd-a27d-4d01-82b7-b16ffb085eb5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -30,7 +30,7 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
+    <Application Id="MAIACAM"
       Executable="$targetnametoken$.exe"
       EntryPoint="MAIA_CAM.App">
       <uap:VisualElements
@@ -56,6 +56,7 @@
     <uap:Capability Name="picturesLibrary"/>
     <uap:Capability Name="musicLibrary"/>
     <uap:Capability Name="videosLibrary"/>
+    <iot:Capability Name="systemManagement"/>
     <DeviceCapability Name="webcam"/>
   </Capabilities>
 </Package>

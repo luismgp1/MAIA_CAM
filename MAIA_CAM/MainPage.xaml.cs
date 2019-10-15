@@ -21,6 +21,13 @@ using Windows.Graphics.Imaging;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.ViewManagement; //full screen
 
+
+
+using Windows.Storage.AccessCache;
+using Windows.Storage.Streams;
+using System.Collections.ObjectModel;
+
+
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0xc0a
 
 namespace MAIA_CAM
@@ -43,8 +50,7 @@ namespace MAIA_CAM
 
         public MainPage()
         {
-            //this.InitializeComponent();
-
+            this.InitializeComponent();
 
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
             var view = ApplicationView.GetForCurrentView();
@@ -67,9 +73,9 @@ namespace MAIA_CAM
         public async Task<SoftwareBitmapSource> fotosolo()
         {
 
-            var uri1 = new System.Uri("ms-appx:///Assets/" + _1foto);
+            var uri1 = new Uri("ms-appx:///Assets/" + _1foto);
 
-            var imagen = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri1);
+            var imagen = await StorageFile.GetFileFromApplicationUriAsync(uri1);
 
 
             var bitmapSource = new SoftwareBitmapSource();
@@ -91,9 +97,16 @@ namespace MAIA_CAM
         {
 
 
-            var uri1 = new System.Uri("ms-appx:///Assets/" + _1camara);
+            var uri1 = new Uri("ms-appx:///Assets/" + _1camara);
 
-            var imagen = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri1);
+            var imagen = await StorageFile.GetFileFromApplicationUriAsync(uri1);
+
+            var pictureFolder = KnownFolders.PicturesLibrary;
+            pictureFolder = await pictureFolder.CreateFolderAsync(carpetanombre, CreationCollisionOption.OpenIfExists);
+
+            await pictureFolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
+            var file2 = await pictureFolder.GetFileAsync(nombredato);
+            await FileIO.WriteTextAsync(file2, "INICIO");
 
 
             var bitmapSource = new SoftwareBitmapSource();
@@ -119,22 +132,48 @@ namespace MAIA_CAM
 
         public async Task<SoftwareBitmapSource> PhotoTake()
         {
-            Debug.WriteLine("contador entrada tomar foto= " + cont);
-            if (cont <= 0)
-            {
-                cont = 1;
-                Debug.WriteLine("si contador <= 0 contador = " + cont);
-            }
-            cont--;
-            Debug.WriteLine("se le resta -1  contador = " + cont);
+
+            
+
+            CameraCaptureUI captureUI = new CameraCaptureUI();
+            captureUI.PhotoSettings.AllowCropping = false;
+
             var bitmapSource = new SoftwareBitmapSource();
 
-            var uri = new System.Uri("ms-appx:///Assets/" + _1nocapturo);
+            var uri = new Uri("ms-appx:///Assets/" + _1nocapturo);
 
             var pictureFolder = KnownFolders.PicturesLibrary;
             pictureFolder = await pictureFolder.CreateFolderAsync(carpetanombre, CreationCollisionOption.OpenIfExists);
 
-            var imagenpre = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);//crear variable global
+            var imagenpre = await StorageFile.GetFileFromApplicationUriAsync(uri);//crear variable global
+
+            await pictureFolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
+            var file2 = await pictureFolder.GetFileAsync(nombredato);
+
+
+
+
+
+            Debug.WriteLine("contador entrada tomar foto= " + cont);
+            if (cont <= 0)
+            {
+                cont = 1;
+                await FileIO.WriteTextAsync(file2, (cont-1) + "\n");
+
+
+                Debug.WriteLine("si contador <= 0 contador = " + cont);
+            }
+            await FileIO.WriteTextAsync(file2, (cont - 1) + "\n");
+            cont--;
+            Debug.WriteLine("se le resta -1  contador = " + cont);
+
+
+
+
+
+
+
+
             // var imagenpre = await pictureFolder.GetFileAsync("sample(0).jpg");
             if (cantidad == _0interador)
             {
@@ -142,22 +181,39 @@ namespace MAIA_CAM
                 imagenpre = await pictureFolder.GetFileAsync(nombrefoto + "(1).jpg"); ///////////////////////IMAGEN 0
 
             }
-
+            
 
             if (cantidad == 1)
             {
+                
 
-                CameraCaptureUI captureUI = new CameraCaptureUI();
-                captureUI.PhotoSettings.AllowCropping = false;
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+              //  captureUI.PhotoSettings.AllowCropping = false;
                 captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
                 var photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);////CAPTURAR MAS DE 1 FOTO
 
-                captureUI.PhotoSettings.MaxResolution = Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution.HighestAvailable;
+                captureUI.PhotoSettings.MaxResolution = CameraCaptureUIMaxPhotoResolution.HighestAvailable;
 
                 if (photo == null)
                 {
                     cont++;
-                    var imagen = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
+                    await FileIO.WriteTextAsync(file2, (cont - 1) + "\n");
+                    var imagen = await StorageFile.GetFileFromApplicationUriAsync(uri);
 
 
                     using (var stream = await imagen.OpenAsync(FileAccessMode.Read))
@@ -173,7 +229,6 @@ namespace MAIA_CAM
                     return bitmapSource;
 
                 }
-
 
                 if (photo != null)
                 {
@@ -193,6 +248,7 @@ namespace MAIA_CAM
 
                         // This is where we want to save to.
                         cont++;
+                        await FileIO.WriteTextAsync(file2, (cont - 1) + "\n");
                         await photo.CopyAsync(pictureFolder, nombrefoto + "(" + cont + ").jpg", NameCollisionOption.ReplaceExisting);
 
                         Debug.WriteLine("Photo saved! n= " + cont);
@@ -200,8 +256,7 @@ namespace MAIA_CAM
 
                         // var uri = new System.Uri("ms-appx:///Assets/captura.png");
                         //crear fichero
-                        await pictureFolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
-                        var file2 = await pictureFolder.GetFileAsync(nombredato);
+
                         await FileIO.WriteTextAsync(file2, cont + "\n");
 
 
@@ -214,12 +269,18 @@ namespace MAIA_CAM
                             await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
                         }
                         cont++;
+                        await FileIO.WriteTextAsync(file2, (cont - 1) + "\n");
+
                     }
                     catch (Exception ex)
                     {
                         // File I/O errors are reported as exceptions
                         Debug.WriteLine("Exception when taking a photo: " + ex.ToString());
                     }
+
+                    ///fin photo null;
+
+
 
                 }
 
@@ -248,6 +309,7 @@ namespace MAIA_CAM
                 return bitmapSource;
             }
 
+
             return bitmapSource;
 
         }
@@ -255,7 +317,7 @@ namespace MAIA_CAM
 
 
         public async void DeletePhoto()
-        {
+        {           
             Debug.WriteLine("contador entrada delete foto = " + cont);
             try
             {
@@ -266,17 +328,23 @@ namespace MAIA_CAM
                 var picturefolder = KnownFolders.PicturesLibrary;
                 picturefolder = await picturefolder.CreateFolderAsync(carpetanombre, CreationCollisionOption.OpenIfExists);
 
+                await picturefolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
+                var Samplefile = await picturefolder.GetFileAsync(nombredato);
+
 
 
 
 
                 if (cantidad == _1interador)
                 {
+
+                    //Borrar.IsEnabled = false;
+
                     Debug.WriteLine("Borrar Foto Cantidad=" + cantidad);
 
 
 
-                    if (cont <= 0 && cont != 1)
+                    if (cont <= 0 )
                     {
                         Debug.WriteLine("contador (cont <= 0 && cont !=1) valor de contador = " + cont);
 
@@ -292,8 +360,10 @@ namespace MAIA_CAM
 
                         imageControl.Source = bitmapSource;
                         cont = 1;
+                        await FileIO.WriteTextAsync(Samplefile, (cont-1) + "\n");
 
                         Debug.WriteLine("No hay tomada contador =" + cont);
+
                     }
 
 
@@ -302,6 +372,7 @@ namespace MAIA_CAM
                     {
                         Debug.WriteLine("borra foto valor entrando  =" + cont);
                         cont--;
+                        await FileIO.WriteTextAsync(Samplefile, cont + "\n");
 
                         Debug.WriteLine("volar de contador al borrar -1 = " + cont);
 
@@ -310,8 +381,6 @@ namespace MAIA_CAM
                         Debug.WriteLine("volar de contador al borrar -1 numero de la foto borrada = " + cont);
 
 
-                        await picturefolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
-                        var Samplefile = await picturefolder.GetFileAsync(nombredato);
 
 
 
@@ -329,12 +398,14 @@ namespace MAIA_CAM
 
                             imageControl.Source = bitmapSource;
                             cont = 1;
-                            await FileIO.WriteTextAsync(Samplefile, cont + "\n");
+                            await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
                             Debug.WriteLine("Foto ultima foto contador = " + cont);
                         }
                         else
                         {
                             int cont1 = cont - 1;
+                            Debug.WriteLine("contador else n= " + cont);
+                            Debug.WriteLine("contador1 else n= " + cont1);
                             var nofoto = await picturefolder.GetFileAsync(nombrefoto + "(" + cont1 + ").jpg");
                             using (var stream1 = await nofoto.OpenAsync(FileAccessMode.Read))
                             {
@@ -346,7 +417,7 @@ namespace MAIA_CAM
                             }
 
                             imageControl.Source = bitmapSource;
-                            await FileIO.WriteTextAsync(Samplefile, cont1 + "\n");
+                            await FileIO.WriteTextAsync(Samplefile, (cont1) + "\n");
                             Debug.WriteLine("Foto mostrada n= " + cont1);
                         }
                     }
@@ -360,6 +431,7 @@ namespace MAIA_CAM
                     if (cont == 2)
                     {
                         cont = 1;
+                        await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
                         Debug.WriteLine("contador =2 cambiamos a contador =1");
                     }
 
@@ -368,11 +440,12 @@ namespace MAIA_CAM
                         Debug.WriteLine("si contador == 1" + cont);
                         var file = await picturefolder.GetFileAsync(nombrefoto + "(" + cont + ").jpg");
                         cont--;
+
+                        await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
+
                         Debug.WriteLine("si contador == 1, le restamos 1 =" + cont);
                         await file.DeleteAsync();
-                        await picturefolder.CreateFileAsync(nombredato, CreationCollisionOption.ReplaceExisting);
-                        var Samplefile = await picturefolder.GetFileAsync(nombredato);
-                        await FileIO.WriteTextAsync(Samplefile, cont + "\n");
+                        await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
                         cantidad = 1;
                         Debug.WriteLine("colocamos cantidad =" + cantidad);
                     }
@@ -381,6 +454,9 @@ namespace MAIA_CAM
                     {
                         Debug.WriteLine("si contador <=0 , contador =" + cont);
                         cont = 1;
+
+                        await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
+
                         Debug.WriteLine("se cambia el valor a 1 contador =" + cont);
                         var nofoto = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
                         using (var stream1 = await nofoto.OpenAsync(FileAccessMode.Read))
@@ -394,8 +470,7 @@ namespace MAIA_CAM
 
                         imageControl.Source = bitmapSource;
 
-                        var Samplefile = await picturefolder.GetFileAsync(nombredato);
-                        await FileIO.WriteTextAsync(Samplefile, cont + "\n");
+                        await FileIO.WriteTextAsync(Samplefile, (cont - 1) + "\n");
                         cantidad = 1;
                         Debug.WriteLine("colocamos cantidad =" + cantidad);
 
@@ -420,11 +495,11 @@ namespace MAIA_CAM
             picturefolder = await picturefolder.CreateFolderAsync(carpetanombre, CreationCollisionOption.OpenIfExists);
             var EditEntrada = await picturefolder.GetFileAsync(inputentrada);
 
-            // await FileIO.WriteTextAsync(EditEntrada, "3");
-            // string cerrarEntrada = await FileIO.ReadTextAsync(EditEntrada);
+             await FileIO.WriteTextAsync(EditEntrada, "3");
+             string cerrarEntrada = await FileIO.ReadTextAsync(EditEntrada);
 
-            // int control = Convert.ToInt32(cerrarEntrada);
-            int control = 3;
+            int control = Convert.ToInt32(cerrarEntrada);
+           // int control = 3;
 
             if (control == 3)
             {

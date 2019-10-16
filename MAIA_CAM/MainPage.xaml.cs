@@ -188,9 +188,9 @@ namespace MAIA_CAM
 
                         ///VALOR DEL ITERADOR recibido cambiar dependiendo
 
-                        var Entradafile = await pictureFolder.GetFileAsync(inputentrada);
-                        string entrada = await FileIO.ReadTextAsync(Entradafile);
-                        cantidad = Convert.ToInt32(entrada);
+                      //  var Entradafile = await pictureFolder.GetFileAsync(inputentrada);
+                      //  string entrada = await FileIO.ReadTextAsync(Entradafile);
+                      //  cantidad = Convert.ToInt32(entrada);
 
                         // This is where we want to save to.
                         cont++;

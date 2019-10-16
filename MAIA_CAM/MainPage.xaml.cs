@@ -443,12 +443,12 @@ namespace MAIA_CAM
         }
 
 
-        public async void Borrar_Click(object sender, RoutedEventArgs e)
+        public void Borrar_Click(object sender, RoutedEventArgs e)
         {
             DeletePhoto();
         }
 
-        public async void Cerrar_Click(object sender, RoutedEventArgs e)
+        public void Cerrar_Click(object sender, RoutedEventArgs e)
         {
             Cerrabutton();
         }

@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
 using Windows.Media.Capture;
 using Windows.Storage;
 using System.Threading.Tasks;
@@ -20,9 +19,6 @@ using System.Diagnostics;
 using Windows.Graphics.Imaging;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.ViewManagement; //full screen
-
-
-
 using Windows.Storage.AccessCache;
 using Windows.Storage.Streams;
 using System.Collections.ObjectModel;
@@ -32,7 +28,7 @@ using System.Collections.ObjectModel;
 
 namespace MAIA_CAM
 {
-
+    // master
 
     public sealed partial class MainPage : Page
     {

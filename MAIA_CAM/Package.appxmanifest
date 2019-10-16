@@ -9,15 +9,15 @@
   IgnorableNamespaces="uap mp iot uap6">
 
   <Identity
-    Name="MAIACAM"
-    Publisher="CN=Luis"
-    Version="1.0.1.0" />
+    Name="SISTEMASDEFACTURACIONESEL.maiacam"
+    Publisher="CN=32099258-6A2F-4578-BDAA-84E2F145BBF9"
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="e59432dd-a27d-4d01-82b7-b16ffb085eb5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>MAIACAM</DisplayName>
-    <PublisherDisplayName>Luis</PublisherDisplayName>
+    <DisplayName>maiacam</DisplayName>
+    <PublisherDisplayName>SISTEMAS DE FACTURACIONES ELECTRÓNICOS</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
